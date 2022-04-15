@@ -74,13 +74,10 @@ Here is a video explaining how the algorithm works : [<u>**Simuler 1 000 000 de 
 
 # Install
 
-### Skeleton project install
-
-This repository is based on my [**Graphics skeleton project**](https://github.com/angeluriot/Graphics_skeleton), so go see its [**install**](https://github.com/angeluriot/Graphics_skeleton#install) part first.
-
-### Additionnal dependecies
-
-Then, you will also need the [**OpenCL**](https://www.khronos.org/opencl/) library.
+### Extra libs
+* Glew
+* OpenCL with CUDA backend: 
+```sudo apt-get install -y nvidia-opencl-dev```
 
 <br/>
 

@@ -24,11 +24,11 @@ void Menu::check_events(const sf::Event& sf_event)
 void Menu::title(const std::string& text)
 {
 	float window_width = ImGui::GetWindowSize().x;
-	float text_width = ImGui::CalcTextSize(text.data()).x;
+    float text_width = ImGui::CalcTextSize(text.data()).x;
 
 	ImGui::NewLine();
-	ImGui::SetCursorPosX((window_width - text_width) * 0.5f);
-	ImGui::Text(text.data());
+    ImGui::SetCursorPosX((window_width - text_width) * 0.5f);
+    ImGui::Text("%s", text.data());
 	ImGui::Separator();
 }
 
@@ -45,7 +45,7 @@ std::vector<bool> Menu::centered_buttons(const std::vector<std::string> texts, f
 	{
 		ImGui::SameLine();
 		ImGui::SetCursorPosX(spaces_size + buttons_widths * i + spaces_size * i);
-		ImGui::Text("");
+        ImGui::NewLine();
 		ImGui::SameLine();
 		result[i] = ImGui::Button(texts[i].data(), ImVec2(buttons_widths, buttons_height));
 	}
@@ -172,8 +172,33 @@ void Menu::display()
 
 		SimulationType temp = simulation_type;
 
-		ImGui::Text("The type of simulation");
-		ImGui::Combo("##simulation_type", reinterpret_cast<int*>(&simulation_type), "Galaxy\0Collision\0Universe");
+        ImGui::Text("The type of simulation");
+        // ImGui::Combo("##simulation_type", reinterpret_cast<int*>(&simulation_type), "Galaxy\0Collision\0Universe");
+
+        const char* items[] = { "Galaxy", "Collision", "Universe"};
+        static const char* current_item = items[0];
+
+        if (ImGui::BeginCombo("##simulation_type", current_item)) // The second parameter is the label previewed before opening the combo.
+        {
+            for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+            {
+                bool is_selected = (current_item == items[n]);
+                if (ImGui::Selectable(items[n], is_selected))
+                {
+                    current_item = items[n];
+                    //ImGui::SetItemDefaultFocus();
+                    switch (n)
+                    {
+                        case 0: simulation_type = SimulationType::Galaxy; break;
+                        case 1: simulation_type = SimulationType::Collision; break;
+                        case 2: simulation_type = SimulationType::Universe; break;
+                        default: break;
+                    }
+                }
+            }
+            ImGui::EndCombo();
+        }
+
 
 		if (simulation_type != temp)
 		{

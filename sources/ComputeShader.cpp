@@ -44,9 +44,9 @@ void ComputeShader::init(const std::string& path)
 	std::string src(std::istreambuf_iterator<char>(kernel_file), (std::istreambuf_iterator<char>()));
 
 	// Compile kernel program which will run on the device.
-	cl::Program::Sources sources(1, std::make_pair(src.c_str(), src.length() + 1));
+    cl::Program::Sources sources{src};
 	context = cl::Context(device);
-	program = cl::Program(context, sources);
+    program = cl::Program(context, sources);
 
 	auto err = program.build();
 	if(err != CL_BUILD_SUCCESS)
