@@ -13,6 +13,18 @@ enum class SimulationType : int
 	Universe	= 2		// The big bang.
 };
 
+
+/**
+ * @brief The simulation model.
+ */
+enum class SimulationModel : int
+{
+    Old         = 0,    // Model of the initial project https://github.com/angeluriot/Galaxy_simulation
+    Newton      = 1,    // Classical Newton's law.
+    AntiNewton  = 2,    // Anti-Newton's law.
+};
+
+
 /**
  * @brief The window to edit the settings of the simulation.
  */
@@ -24,6 +36,8 @@ public:
 	static bool				active;				// True if you clicked on the menu, false otherwise.
 	static bool				pause;				// True if the simulation is paused, false otherwise.
 	static SimulationType	simulation_type;	// The type of the simulation.
+    static SimulationModel  simulation_model;       // Newton versus Anti-Newton.
+    static float            negative_mass_proportion;// Anti-Newton: percentage of negative mass.
 	static float			step;				// The time step of the simulation.
 	static float			smoothing_length;	// The smoothing length of the gravitational force.
 	static float			interaction_rate;	// The proportion of interactive stars.
@@ -33,6 +47,8 @@ public:
 	static float			galaxies_distance;	// The distance between the galaxies.
 	static float			stars_speed;		// The initial speed of the stars.
 	static float			black_hole_mass;	// The mass of the black hole.
+	static dim::Vector4     color_negative_mass;    // Color for negative masses.
+    static dim::Vector4     color_positive_mass;    // Color for positive masses.
 
 	/**
 	 * @brief Handle the events of the menu.

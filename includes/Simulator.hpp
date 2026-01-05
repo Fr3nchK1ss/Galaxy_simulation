@@ -20,6 +20,8 @@ public:
 	static std::atomic<bool>	reload;				// True if the simulation have to restart.
 	static std::atomic<bool>	waiting;			// True if the renderer is waiting.
 	static SimulationType		simulation_type;	// The type of the simulation.
+    static SimulationModel      simulation_model;       // Newton versus Anti-Newton.
+    static float                negative_mass_proportion;// Anti-Newton: percentage of negative mass.
 	static float				step;				// The time step of the simulation.
 	static float				smoothing_length;	// The smoothing length of the gravitational force.
 	static float				interaction_rate;	// The proportion of interactive stars.

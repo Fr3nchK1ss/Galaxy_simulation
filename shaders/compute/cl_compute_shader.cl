@@ -22,8 +22,8 @@ float distance_2(float3 point_1, float3 point_2)
 	return norm_2(point_2 - point_1);
 }
 
-// Handle the interactions betweens the stars.
-__kernel void interactions(__global float4* positions, __global float4* accelerations,
+// Initial model: Handle the interactions betweens the stars.
+__kernel void interactions_old(__global float4* positions, __global float4* accelerations,
 	__global float* interaction_rate, __global float* smoothing_length, __global float* black_hole_mass)
 {
 	int index = get_global_id(0);
@@ -39,6 +39,45 @@ __kernel void interactions(__global float4* positions, __global float4* accelera
 	}
 
 	acc += (*black_hole_mass * normalize(-convert_3(positions[index]))) / (norm_2(convert_3(positions[index])) + *smoothing_length);
+	accelerations[index] = convert_4(acc);
+}
+
+// Newton model: Handle the interactions betweens the stars.
+__kernel void interactions_newton(__global float* masses, __global float4* positions, __global float4* accelerations,
+	__global float* interaction_rate, __global float* smoothing_length)
+{
+	int index = get_global_id(0);
+	float3 acc = (float3)(0, 0, 0);
+
+	for (int i = 0; i < *interaction_rate * get_global_size(0); i++)
+	{
+		if (i != index)
+		{
+			float3 vector = convert_3(positions[i]) - convert_3(positions[index]);
+			acc += masses[i] * (normalize(vector) / (norm_2(vector) + *smoothing_length)) / *interaction_rate;
+		}
+	}
+
+	accelerations[index] = convert_4(acc);
+}
+
+// Anti-Newton model: Handle the interactions betweens the stars.
+__kernel void interactions_anti_newton(__global float* masses, __global float4* positions, __global float4* accelerations,
+	__global float* interaction_rate, __global float* smoothing_length)
+{
+	int index = get_global_id(0);
+	float3 acc = (float3)(0, 0, 0);
+
+	for (int i = 0; i < *interaction_rate * get_global_size(0); i++)
+	{
+		if (i != index)
+		{
+			float3 vector = convert_3(positions[i]) - convert_3(positions[index]);
+			acc += masses[i] * (normalize(vector) / (norm_2(vector) + *smoothing_length)) / *interaction_rate;
+		}
+	}
+
+	acc = masses[index] * acc;
 	accelerations[index] = convert_4(acc);
 }
 

@@ -4,6 +4,8 @@ std::atomic<bool>	Simulator::computation_done;
 std::atomic<bool>	Simulator::reload;
 std::atomic<bool>	Simulator::waiting;
 SimulationType		Simulator::simulation_type;
+SimulationModel         Simulator::simulation_model;
+float                   Simulator::negative_mass_proportion;
 float				Simulator::step;
 float				Simulator::smoothing_length;
 float				Simulator::interaction_rate;
@@ -36,6 +38,8 @@ void Simulator::init()
 void Simulator::restart()
 {
 	simulation_type = Menu::simulation_type;
+    simulation_model = Menu::simulation_model;
+    negative_mass_proportion = Menu::negative_mass_proportion;
 	step = Menu::step;
 	smoothing_length = Menu::smoothing_length;
 	interaction_rate = Menu::interaction_rate;
